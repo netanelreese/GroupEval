@@ -1,4 +1,6 @@
-import requests
+#import requests
+from pip._vendor import requests
+
 import config
 
 class Network:
