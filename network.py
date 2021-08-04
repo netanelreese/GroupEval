@@ -1,17 +1,19 @@
 #import requests
 from pip._vendor import requests
-
+from canvasapi import *
 import config
 
 class Network:
-    API_LINK = 'https://canvas.ou.edu/api/v1/'
+    API_LINK = config.API_URL
+    API_KEY = config.API_KEY
     COURSE_ID = config.COURSE_ID
     GROUP_CATEGORY_ID = config.GROUP_CATEGORY_ID
+    CANVAS = Canvas(API_LINK, API_KEY)
+    COURSE = CANVAS.get_course(COURSE_ID)
     HEADER = {'Authorization' : 'Bearer ' + config.API_KEY }
     def get_groups(self):
-        endpoint = 'courses/%s/groups?per_page=100' % self.COURSE_ID
-        response = self.get_network_call(endpoint)
-        return response
+        groups = Network.COURSE.get_groups()
+        return groups
     def get_students_from_group_id(self, group_id):
         endpoint = 'groups/%s/users' % group_id
         response = self.get_network_call(endpoint)
