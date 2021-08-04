@@ -15,14 +15,21 @@ class Network:
         groups = Network.COURSE.get_groups()
         return groups
     def get_students_from_group_id(self, group_id):
-        endpoint = 'groups/%s/users' % group_id
-        response = self.get_network_call(endpoint)
-        return response
-    def make_group(self, group_name):
-        endpoint = 'group_categories/%s/groups' % self.GROUP_CATEGORY_ID
-        body = { 'name': group_name }
-        response = self.post_network_call(endpoint, body)
-        return response["id"]
+        groups = Network.COURSE.get_groups()
+        for group in groups:
+            if (group == group_id):
+                return group.get_users()
+            else:
+                print("Fuck you asshole you gave us the wrong id")
+    def make_group(self, group_name, category_id):
+        category = Network.COURSE.get_group_categories()[0]
+        category.create_group(group={'name': 'Maddie Quiroga'})
+        groups = category.get_groups()
+        for group in groups:
+            if (group.name == "Maddie Quiroga"):
+                return group.name
+            else:
+                return "failed to create group"
     def add_members_to_group(self, member_string, group_id):
         endpoint = 'groups/%s' % group_id
         body = { 'members' : member_string }
